@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Damn
   module Legacy
     module DSL
@@ -6,19 +8,19 @@ module Damn
       end
 
       def meth(methods)
-        Store.instance.add_link(self, methods)
-        self
-      end
-
-      def c_meth(methods)
-        Store.instance.add_link(self, methods)
-        self
+        tail = Store.instance.add(self, methods)
+        [self, tail]
       end
 
       def step(&block)
-        return self unless block_given?
-        val = block.call
-        Store.instance.add_link(self, val)
+        raise ArgumentError, "No block provided" unless block_given?
+
+        head, = block.call
+        if is_a?(Array)
+          Store.instance.add(last, head)
+        else
+          Store.instance.add(self, head)
+        end
         self
       end
     end

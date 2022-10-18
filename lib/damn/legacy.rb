@@ -3,7 +3,7 @@
 require_relative "legacy/version"
 require_relative "legacy/dsl"
 require_relative "legacy/store"
-
+require_relative "legacy/visualizers/mermaid"
 
 module Damn
   module Legacy

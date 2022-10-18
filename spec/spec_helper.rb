@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "pry"
 require "damn/legacy"
 
 RSpec.configure do |config|
