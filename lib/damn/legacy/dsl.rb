@@ -3,6 +3,7 @@
 module Damn
   module Legacy
     module DSL
+
       def const_missing(name)
         const_set(name, Class.new)
       end
@@ -16,6 +17,10 @@ module Damn
         val = block.call
         Store.instance.add(self, val) if val != nil && self.to_s == Store.instance.stack.first
         self
+      end
+
+      def plot
+        Mermaid.call
       end
     end
   end

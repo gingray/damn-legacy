@@ -13,5 +13,9 @@ module Damn
       Object.class.prepend(DSL)
       Object.prepend(DSL)
     end
+
+    def self.store_clean
+      Store.instance.clean
+    end
   end
 end

@@ -4,9 +4,12 @@ describe Damn::Legacy::Mermaid do
   context "generate mermaid.js diagram" do
     before do
       Damn::Legacy.turn_on
-      Damn::Legacy::Store.instance.clean
+      Damn::Legacy.store_clean
+      DeductMoney.meth(:prepare).step do
+        Mail
+      end
 
-      Payment.meth([call: [validate: [check_balance: [:pay]]]]).step do
+      Payment.meth([call: [validate: [check_balance: [:pay, :fail]]]]).step do
         DeductMoney.meth(:call).step do
           InformUser.meth(:notify).step do
             Mail.meth(:call).step do
@@ -16,8 +19,7 @@ describe Damn::Legacy::Mermaid do
       end
     end
     it "succeeds" do
-      code = Damn::Legacy::Mermaid.call
-      expect(code).to be_a String
+      expect(plot).to be_a String
     end
   end
 end

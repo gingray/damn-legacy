@@ -1,9 +1,42 @@
 # Damn::Legacy
+Quite a lot of time I have to work with huge legacy code bases. When I face a bug I create small ruby script to put everything I've found or related information.
+I create small DSL to describe "stacktraces" which I create by hand. Main goal of this gem is provide a nice DSL to create this kind of code mind maps.  
+I found it useful for few reasons first one all IDE support code navigation it means I can easely jump to real classes and keep context of the task tight in one file.  
+Second benefit this DSL can create diagrams currently it's support only [Mermaid.js](https://mermaid-js.github.io/mermaid/#/stateDiagram) state diagram.  
+Good thing about it you can easily visualise it and embed in your document to share it with someone for your own knowledge base.  
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/damn/legacy`. To experiment with that code, run `bin/console` for an interactive prompt.
+I'm trying this thing as POC means if you find it useful it's cool if not whatever :)  
 
-TODO: Delete this and the text above, and describe your gem
+```ruby
+Damn::Legacy.turn_on
+Damn::Legacy.store_clean
 
+Payment.meth([call: [validate: [check_balance: [:pay]]]]).step do
+    DeductMoney.meth(:call).step do
+        InformUser.meth(:notify).step do
+            Mail.meth(:call).step do
+            end
+        end
+    end
+end
+
+puts plot
+```
+Example
+
+```mermaid
+stateDiagram-v2
+Payment --> Payment#call
+Payment#call --> Payment#call#validate
+Payment#call#validate --> Payment#call#validate#check_balance
+Payment#call#validate#check_balance --> Payment#call#validate#check_balance#pay
+Payment#call#validate#check_balance#pay --> DeductMoney
+DeductMoney --> DeductMoney#call
+DeductMoney#call --> InformUser
+InformUser --> InformUser#notify
+InformUser#notify --> Mail
+Mail --> Mail#call
+```
 ## Installation
 
 Add this line to your application's Gemfile:
