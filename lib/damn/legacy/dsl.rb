@@ -8,19 +8,13 @@ module Damn
       end
 
       def meth(methods)
-        tail = Store.instance.add(self, methods)
-        [self, tail]
+        Store.instance.add_meth(self, methods)
       end
 
       def step(&block)
         raise ArgumentError, "No block provided" unless block_given?
-
-        head, = block.call
-        if is_a?(Array)
-          Store.instance.add(last, head)
-        else
-          Store.instance.add(self, head)
-        end
+        val = block.call
+        Store.instance.add(self, val) if val != nil && self.to_s == Store.instance.stack.first
         self
       end
     end

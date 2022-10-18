@@ -6,7 +6,7 @@ describe Damn::Legacy do
   context "check DSL enabled" do
     before { Damn::Legacy.turn_on }
     it do
-      expect(kls.meth([:call])).to eq kls
+      expect(kls.meth([:call])).to eq "#{kls}#call"
     end
   end
 end
