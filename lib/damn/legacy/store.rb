@@ -12,7 +12,7 @@ module Damn
       end
 
       def add_meth(from, to)
-        stack.unshift(from.to_s) if stack.count > 0
+        stack.unshift(from.to_s) if stack.count.positive?
         val = add(from, to)
         stack.unshift(val.to_s)
         val
