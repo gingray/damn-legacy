@@ -1,10 +1,17 @@
 # frozen_string_literal: true
 
 require_relative "legacy/version"
+require_relative "legacy/dsl"
+require_relative "legacy/store"
+
 
 module Damn
   module Legacy
     class Error < StandardError; end
-    # Your code goes here...
+
+    def self.turn_on
+      Object.class.prepend(DSL)
+      Object.prepend(DSL)
+    end
   end
 end

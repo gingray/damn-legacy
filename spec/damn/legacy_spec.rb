@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
-RSpec.describe Damn::Legacy do
-  it "has a version number" do
-    expect(Damn::Legacy::VERSION).not_to be nil
-  end
-
-  it "does something useful" do
-    expect(false).to eq(true)
+describe Damn::Legacy, focus: true do
+  context "check DSL enabled" do
+    before { Damn::Legacy.turn_on }
+    it do
+      #noinspection RubyResolve
+      kls = NotExistingConst
+      expect(kls.meth([:call])).to eq kls
+    end
   end
 end
