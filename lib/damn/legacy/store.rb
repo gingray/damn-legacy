@@ -4,14 +4,22 @@ require "singleton"
 module Damn
   module Legacy
     class Store
-      attr_reader :store, :last_added
+      attr_reader :store, :last_added, :stack
 
       include Singleton
       def initialize
         init
       end
 
+      def add_meth(from, to)
+        stack.unshift(from.to_s) if stack.count > 0
+        val = add(from, to)
+        stack.unshift(val.to_s)
+        val
+      end
+
       def add(from, to)
+        check_stack
         return add_array_to_store(from, to, "#") if to.is_a?(Array)
         return add_hash_to_store(from, to, "#") if to.is_a?(Hash)
         return add_sym_to_store(from, to, "#") if to.is_a?(Symbol)
@@ -25,8 +33,17 @@ module Damn
 
       private
 
+      def check_stack
+        while stack.count >= 2
+          value = stack.shift
+          key = stack.shift
+          store[key] << value
+        end
+      end
+
       def init
         @store = Hash.new { |h, k| h[k] = [] }
+        @stack = []
         @last_added = nil
       end
 
