@@ -15,7 +15,12 @@ module Damn
         raise ArgumentError, "No block provided" unless block_given?
 
         val = block.call
-        if !val.nil? && !Store.instance.stack.empty? && self == Store.instance.stack.first[1]
+        if val.nil?
+          head, = Store.instance.stack.shift
+          return head.to_s
+        end
+
+        if !Store.instance.stack.empty? && self == Store.instance.stack.first[1]
           each do |key|
             Store.instance.add(key, val)
           end

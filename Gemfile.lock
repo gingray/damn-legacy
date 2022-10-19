@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    damn-legacy (0.0.1)
+    damn-legacy (0.0.2)
 
 GEM
   remote: https://rubygems.org/

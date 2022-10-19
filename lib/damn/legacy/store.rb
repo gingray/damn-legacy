@@ -49,7 +49,7 @@ module Damn
       def add_hash_to_store(key, value, glue)
         value.map do |k, v|
           next_key = "#{key}#{glue}#{k}"
-          store[key] << next_key
+          store[key.to_s] << next_key
           next add_sym_to_store(next_key, v, glue) if v.is_a?(Symbol)
           next add_hash_to_store(next_key, v, glue) if v.is_a?(Hash)
           next add_array_to_store(next_key, v, glue) if v.is_a?(Array)
