@@ -20,12 +20,10 @@ module Damn
             Store.instance.add(key, val)
           end
         else
-          head,  = Store.instance.stack.shift
-          if head
-            if self.is_a?(Array)
-              each do |key|
-                Store.instance.add(key, head)
-              end
+          head, = Store.instance.stack.shift
+          if head && is_a?(Array)
+            each do |key|
+              Store.instance.add(key, head)
             end
           end
         end

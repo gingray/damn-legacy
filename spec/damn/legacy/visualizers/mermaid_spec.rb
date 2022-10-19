@@ -9,7 +9,7 @@ describe Damn::Legacy::Mermaid, focus: true do
         Mail
       end
 
-      Payment.meth([call: [validate: [check_balance: [:pay, :fail]]]]).step do
+      Payment.meth([call: [validate: [check_balance: %i[pay fail]]]]).step do
         DeductMoney.meth(:call).step do
           InformUser.meth(:notify).step do
             Mail

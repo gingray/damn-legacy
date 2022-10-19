@@ -13,7 +13,7 @@ module Damn
 
       def add_meth(from, to)
         val = add(from, to)
-        stack.unshift([from.to_s,val])
+        stack.unshift([from.to_s, val])
         val
       end
 
