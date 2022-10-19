@@ -7,7 +7,7 @@ module Damn
         const_set(name, Class.new)
       end
 
-      def meth(methods)
+      def meth(methods, _opts = {})
         Store.instance.add_meth(self, methods)
       end
 
