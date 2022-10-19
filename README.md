@@ -11,31 +11,36 @@ I'm trying this thing as POC means if you find it useful it's cool if not whatev
 Damn::Legacy.turn_on
 Damn::Legacy.store_clean
 
-Payment.meth([call: [validate: [check_balance: [:pay]]]]).step do
-    DeductMoney.meth(:call).step do
-        InformUser.meth(:notify).step do
-            Mail.meth(:call).step do
-            end
-        end
-    end
+DeductMoney.meth(:prepare).step do
+  Mail
 end
 
-puts plot
+Payment.meth([call: [validate: [check_balance: [:pay, :fail]]]]).step do
+  DeductMoney.meth(:call).step do
+    InformUser.meth(:notify).step do
+      Mail
+    end
+  end
+end
+
 ```
 Example
 
 ```mermaid
 stateDiagram-v2
+DeductMoney --> DeductMoney#prepare
+DeductMoney --> DeductMoney#call
+DeductMoney#prepare --> Mail
 Payment --> Payment#call
 Payment#call --> Payment#call#validate
 Payment#call#validate --> Payment#call#validate#check_balance
 Payment#call#validate#check_balance --> Payment#call#validate#check_balance#pay
-Payment#call#validate#check_balance#pay --> DeductMoney
-DeductMoney --> DeductMoney#call
-DeductMoney#call --> InformUser
+Payment#call#validate#check_balance --> Payment#call#validate#check_balance#fail
 InformUser --> InformUser#notify
 InformUser#notify --> Mail
-Mail --> Mail#call
+DeductMoney#call --> InformUser
+Payment#call#validate#check_balance#pay --> DeductMoney
+Payment#call#validate#check_balance#fail --> DeductMoney
 ```
 ## Installation
 

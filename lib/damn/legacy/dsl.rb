@@ -11,16 +11,24 @@ module Damn
         Store.instance.add_meth(self, methods)
       end
 
-      def frame
-        Store.instance.stack.clear
-        yield
-      end
-
       def step(&block)
         raise ArgumentError, "No block provided" unless block_given?
 
         val = block.call
-        Store.instance.add(self, val) if !val.nil? && to_s == Store.instance.stack.first
+        if !val.nil? && !Store.instance.stack.empty? && self == Store.instance.stack.first[1]
+          each do |key|
+            Store.instance.add(key, val)
+          end
+        else
+          head,  = Store.instance.stack.shift
+          if head
+            if self.is_a?(Array)
+              each do |key|
+                Store.instance.add(key, head)
+              end
+            end
+          end
+        end
         self
       end
 

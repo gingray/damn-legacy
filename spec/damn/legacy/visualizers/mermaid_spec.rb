@@ -1,29 +1,23 @@
 # frozen_string_literal: true
 
-describe Damn::Legacy::Mermaid do
+describe Damn::Legacy::Mermaid, focus: true do
   context "generate mermaid.js diagram" do
     before do
       Damn::Legacy.turn_on
       Damn::Legacy.store_clean
-      frame do
-        DeductMoney.meth(:prepare).step do
-          Mail
-        end
+      DeductMoney.meth(:prepare).step do
+        Mail
       end
 
-      frame do
-        Payment.meth([call: [validate: [check_balance: [:pay]]]]).step do
-          DeductMoney.meth(:call).step do
-            InformUser.meth(:notify).step do
-              Mail.meth(:call).step do
-              end
-            end
+      Payment.meth([call: [validate: [check_balance: [:pay, :fail]]]]).step do
+        DeductMoney.meth(:call).step do
+          InformUser.meth(:notify).step do
+            Mail
           end
         end
       end
     end
     it "succeeds" do
-      # binding.pry
       expect(plot).to be_a String
     end
   end
